@@ -1,18 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bhuvnesh Kumar (bxuvnesh)</title>
   <meta name="description" content="Bhuvnesh Kumar, student from India. Also known as bxuvnesh.">
+  <meta name="theme-color" content="#0d1b17">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Bhuvnesh Kumar",
+    "alternateName": "bxuvnesh",
+    "url": "https://bxuvnesh.github.io/",
+    "sameAs": ["https://www.instagram.com/bxuvnesh/", "https://www.linkedin.com/in/bhuvneshkumar-"]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #0d1b17;
+      --ink: #e4e9e6;
+      --mint: #4fd8a4;
+      --ash: #98a5a0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+    /* soft mint glow */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(60vmax 60vmax at 90% 0%, rgba(79, 216, 164, 0.16), transparent 70%);
+      pointer-events: none;
+    }
+    /* checkerboard, a nod to the GitHub avatar */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-conic-gradient(var(--mint) 0% 25%, transparent 0% 50%) 0 0 / 56px 56px;
+      opacity: 0.08;
+      -webkit-mask-image: linear-gradient(to bottom left, #000, transparent 60%);
+      mask-image: linear-gradient(to bottom left, #000, transparent 60%);
+      pointer-events: none;
+    }
+    main {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: clamp(1.5rem, 6vw, 4rem);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(3.8rem, 16vw, 10rem);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -0.035em;
+    }
+    .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
+    .line span { display: inline-block; animation: rise 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+    .line:nth-child(2) span { animation-delay: 0.12s; }
+    .handle {
+      margin: 1.5rem 0 0;
+      font-size: clamp(1.2rem, 4vw, 1.6rem);
+      font-weight: 600;
+      color: var(--mint);
+      animation: fade 0.7s ease 0.45s both;
+    }
+    .bio {
+      margin: 0.6rem 0 0;
+      max-width: 34ch;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: var(--ash);
+      animation: fade 0.7s ease 0.55s both;
+    }
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 2.4rem 0 0;
+      padding: 0;
+      list-style: none;
+      animation: fade 0.7s ease 0.7s both;
+    }
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.75rem 1.4rem;
+      border: 2px solid var(--ash);
+      border-radius: 999px;
+      color: var(--ink);
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+    }
+    a svg { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    a:hover, a:focus-visible { border-color: var(--mint); color: var(--mint); transform: translateY(-2px); }
+    a.primary { background: var(--mint); border-color: var(--mint); color: var(--bg); }
+    a.primary:hover, a.primary:focus-visible { background: #7ae9bf; border-color: #7ae9bf; color: var(--bg); }
+    a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+    footer {
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: var(--ash);
+      animation: fade 0.7s ease 0.9s both;
+    }
+    @keyframes rise { from { transform: translateY(105%); } to { transform: none; } }
+    @keyframes fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
 </head>
-<body style="font-family: sans-serif; max-width: 600px; margin: 60px auto; padding: 0 20px;">
-  <h1>Bhuvnesh Kumar</h1>
-  <p>Also known as <b>bxuvnesh</b>. Student from India. Just messing with stuff.</p>
-  <p>
-    <a href="https://www.linkedin.com/in/bhuvneshkumar-">LinkedIn</a> |
-    <a href="https://www.instagram.com/bxuvnesh/">Instagram</a> |
-    <a href="mailto:bxuvnesh@gmail.com">Email</a>
-  </p>
+<body>
+  <main>
+    <h1>
+      <span class="line"><span>Bhuvnesh</span></span>
+      <span class="line"><span>Kumar</span></span>
+    </h1>
+    <p class="handle">Also known as bxuvnesh</p>
+    <p class="bio">Student from India. Just messing with stuff.</p>
+    <ul>
+      <li><a class="primary" href="mailto:bxuvnesh@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</a></li>
+      <li><a href="https://www.linkedin.com/in/bhuvneshkumar-"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v6M8 7.5v.01M12 17v-6M12 13.5c0-1.5 1-2.5 2.5-2.5S17 12 17 13.5V17"/></svg>LinkedIn</a></li>
+      <li><a href="https://www.instagram.com/bxuvnesh/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6"/></svg>Instagram</a></li>
+    </ul>
+    <footer>Hand-coded on GitHub Pages.</footer>
+  </main>
 </body>
 </html>
