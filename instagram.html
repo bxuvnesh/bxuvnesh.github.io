@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bhuvnesh Kumar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Jost:wght@300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #101413;
+    --mint-pale: #e4faf0;
+    --mint-soft: #b9e8d3;
+    --mint: #6fd3a8;
+    --mint-deep: #3fae83;
+    --line: rgba(255, 255, 255, 0.22);
+    --text-dim: rgba(255, 255, 255, 0.6);
+    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --sans: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--mint-pale);
+    font-family: var(--serif);
+    text-align: center;
+  }
+
+  /* atmosphere: soft glows, thin arc, film grain */
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(28px);
+    transform: rotate(-35deg);
+    pointer-events: none;
+  }
+  .glow.a {
+    top: -6%; left: -30%;
+    width: 85vmax; height: 26vmax;
+    background: radial-gradient(closest-side, rgba(100, 160, 135, 0.3), transparent);
+  }
+  .glow.b {
+    right: -35%; bottom: 0;
+    width: 70vmax; height: 18vmax;
+    background: radial-gradient(closest-side, rgba(100, 155, 135, 0.3), transparent);
+  }
+  .glow.c {
+    left: -30%; top: 55%;
+    width: 60vmax; height: 16vmax;
+    background: radial-gradient(closest-side, rgba(90, 135, 115, 0.16), transparent);
+  }
+  .arc {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 150vmin; height: 150vmin;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 50%;
+    transform: translate(-38%, -45%);
+    pointer-events: none;
+  }
+  body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: clamp(16px, 6svh, 60px);
+    animation: rise 1.1s ease-out both;
+  }
+  .rail {
+    width: 1px;
+    height: clamp(40px, 14svh, 180px);
+    background: linear-gradient(to bottom, transparent, var(--line));
+  }
+  .rail.down { background: linear-gradient(to bottom, var(--line), transparent); }
+  .star {
+    width: 14px; height: 14px;
+    margin: 2px 0;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  h1 {
+    margin: clamp(20px, 5svh, 56px) 0;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .top {
+    font-size: clamp(2.6rem, 11.5vw, 5.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    background: linear-gradient(to bottom, var(--mint-pale), var(--mint-soft));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 22px rgba(143, 227, 192, 0.18));
+  }
+  .locked {
+    margin: clamp(10px, 2svh, 22px) 0 0;
+    padding-left: 0.7em; /* balances trailing letter-spacing */
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: clamp(0.8rem, 3vw, 1.1rem);
+    letter-spacing: 0.7em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .in {
+    margin-top: clamp(0px, 0.5svh, 6px);
+    font-size: clamp(5rem, 24vw, 10.5rem);
+    line-height: 1;
+    font-weight: 700;
+    background: linear-gradient(to bottom, var(--mint-soft) 0%, var(--mint) 45%, var(--mint-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 26px rgba(95, 220, 170, 0.35));
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(14px, 3svh, 30px);
+    padding: clamp(10px, 4svh, 40px) 1.5rem clamp(24px, 6svh, 64px);
+    font-size: clamp(1rem, 3.6vw, 1.25rem);
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    animation: rise 1.1s 0.25s ease-out both;
+  }
+  .rule {
+    width: 94px; height: 1px;
+    background: var(--line);
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    main, footer { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="glow a"></div>
+  <div class="glow b"></div>
+  <div class="glow c"></div>
+  <div class="arc"></div>
+
+  <main>
+    <div class="rail" aria-hidden="true"></div>
+    <svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C12.6 7 17 11.4 24 12C17 12.6 12.6 17 12 24C11.4 17 7 12.6 0 12C7 11.4 11.4 7 12 0Z"/></svg>
+    <h1>
+      <span class="top">The lion is<br>currently</span>
+      <span class="locked">locked</span>
+      <span class="in">In</span>
+    </h1>
+    <svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C12.6 7 17 11.4 24 12C17 12.6 12.6 17 12 24C11.4 17 7 12.6 0 12C7 11.4 11.4 7 12 0Z"/></svg>
+    <div class="rail down" aria-hidden="true"></div>
+  </main>
+
+  <footer>
+    <span>No insta for now 💔</span>
+    <span class="rule" aria-hidden="true"></span>
+    <span>Stay tuned 🚀</span>
+  </footer>
+</body>
+</html>
