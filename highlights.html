@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/favicon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Highlights - Bhuvnesh Kumar</title>
+<link rel="canonical" href="https://bxuvnesh.github.io/highlights.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e11;--slate:#171e25;--line:#36404a;--blue:#94b0c4;--ice:#e4e9f1;--muted:#9aa7b3;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html{background:var(--bg)}
+body{font-family:Manrope,system-ui,sans-serif;color:var(--ice);background:radial-gradient(60rem 30rem at 50% -10%,#94b0c424,transparent),var(--bg);line-height:1.6}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.wrap{max-width:960px;min-height:100vh;min-height:100dvh;margin:0 auto;padding:24px 20px 32px;display:flex;flex-direction:column}
+.stack{margin-block:auto;padding-block:24px}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:28px;padding:8px 0;color:var(--muted);font-size:.95rem}
+nav a{position:relative}
+nav a:hover{color:var(--ice)}
+nav a[aria-current]{color:var(--ice);font-weight:600}
+nav a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--blue)}
+nav a.soon{opacity:.4;pointer-events:none}
+footer{padding-top:8px;color:var(--muted);font-size:.85rem;text-align:center}
+h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw,3.6rem);letter-spacing:-.02em;text-align:center;color:var(--blue);text-shadow:0 0 28px #94b0c455}
+.sub{text-align:center;color:var(--muted);margin-top:4px}
+.rail{display:flex;flex-wrap:wrap;justify-content:center;gap:32px;margin-top:36px}
+.hl{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;color:inherit;font:inherit;cursor:pointer}
+.ring{width:clamp(92px,24vw,128px);aspect-ratio:1;padding:4px;border-radius:50%;border:2px solid var(--blue);box-shadow:0 0 28px #94b0c444;background:var(--slate)}
+.ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.hl:hover .ring{border-color:var(--ice)}
+.hl.empty{cursor:default;opacity:.6}
+.hl.empty .ring{border-style:dashed;box-shadow:none}
+
+#v{position:fixed;inset:0;z-index:9;display:none;align-items:center;justify-content:center;background:#000d}
+#v.on{display:flex}
+.st{position:relative;height:100dvh;max-height:920px;aspect-ratio:9/16;max-width:100vw;background:#000;border-radius:18px;overflow:hidden}
+.st img{width:100%;height:100%;object-fit:contain;display:block}
+.bars{position:absolute;top:10px;left:10px;right:10px;z-index:3;display:flex;gap:4px}
+.bars b{flex:1;height:3px;border-radius:2px;background:#fff4;overflow:hidden}
+.bars i{display:block;height:100%;width:0;background:var(--ice)}
+.bars .d i{width:100%}
+.bars .a i{animation:fill var(--t) linear forwards}
+@keyframes fill{to{width:100%}}
+.tb{position:absolute;top:22px;right:12px;z-index:3;display:flex;gap:8px}
+.tb button{padding:6px 14px;font:inherit;font-size:.85rem;color:#fff;background:#0009;border:1px solid #fff3;border-radius:999px;cursor:pointer}
+.z{position:absolute;top:60px;bottom:0;z-index:2;background:none;border:0;cursor:pointer}
+.z.l{left:0;width:33%}
+.z.r{right:0;width:67%}
+.cap{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:56px 18px 24px;text-align:center;color:#fff;background:linear-gradient(transparent,#000b);pointer-events:none}
+@media(max-width:520px){.st{width:100vw;aspect-ratio:auto;border-radius:0;max-height:none}}
+
+.adm{display:none;max-width:560px;margin:40px auto 0;padding:22px;background:var(--slate);border:1px solid var(--line);border-radius:18px}
+.adm.on{display:block}
+.adm h2{font-family:Fraunces,Georgia,serif;font-weight:500;margin-bottom:10px}
+.adm label{display:block;font-size:.85rem;color:var(--muted)}
+.adm input,.adm select,.adm .b{width:100%;padding:10px 12px;margin:4px 0 14px;font:inherit;color:var(--ice);background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.adm .b{cursor:pointer;color:var(--bg);background:var(--blue);border:0;font-weight:600}
+.adm .b.alt{color:var(--ice);background:none;border:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.mg{display:grid;gap:8px;margin:4px 0 14px}
+.mi{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px;border:1px solid var(--line);border-radius:10px}
+.mi.off{opacity:.55}
+.mi img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.mi span{flex:1;min-width:90px;font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mi button{padding:6px 10px;font:inherit;font-size:.78rem;color:var(--ice);background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+#msg{min-height:1.4em;color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="achievements.html" class="soon">Achievements</a>
+    <a href="daily.html" class="soon">Daily</a>
+    <a href="highlights.html" aria-current="page">Highlights</a>
+  </nav>
+
+  <div class="stack">
+    <h1>Highlights</h1>
+    <p class="sub">Tap a circle to watch.</p>
+    <div class="rail" id="rail"></div>
+
+    <section class="adm" id="adm" aria-label="Admin">
+      <h2>Admin</h2>
+      <label for="tok">GitHub token (stays in this browser only)</label>
+      <input id="tok" type="password" autocomplete="off" placeholder="github_pat_...">
+      <label for="sel">Highlight</label>
+      <select id="sel"></select>
+      <label for="tt">Rename this highlight</label>
+      <input id="tt" placeholder="New title">
+      <button class="b alt" id="ren" type="button">Save title</button>
+      <button class="b alt" id="new" type="button">New highlight</button>
+      <button class="b alt" id="hh" type="button">Hide this highlight</button>
+      <label>Photos in this highlight</label>
+      <div class="mg" id="mg"></div>
+      <label for="pf">Photo</label>
+      <input id="pf" type="file" accept="image/*">
+      <label for="cap2">Caption (optional)</label>
+      <input id="cap2">
+      <label for="song">Song for this photo</label>
+      <select id="song"></select>
+      <label for="sf">New song file (mp3 or m4a)</label>
+      <input id="sf" type="file" accept="audio/*">
+      <div class="row">
+        <div><label for="ss">Start at (sec)</label><input id="ss" type="number" min="0" placeholder="0"></div>
+        <div><label for="sl">Play for (max 20)</label><input id="sl" type="number" min="1" max="20" placeholder="20"></div>
+        <div><label for="sec">Photo secs</label><input id="sec" type="number" min="1" placeholder="auto"></div>
+      </div>
+      <button class="b" id="up" type="button">Upload</button>
+      <p id="msg" role="status"></p>
+    </section>
+  </div>
+
+  <footer>© 2026 Bhuvnesh Kumar</footer>
+</div>
+
+<div id="v" role="dialog" aria-modal="true" aria-label="Story viewer">
+  <div class="st">
+    <div class="bars" id="bars"></div>
+    <div class="tb"><button id="m" type="button">Mute</button><button id="x" type="button">Close</button></div>
+    <img id="im" alt="">
+    <button class="z l" id="pv" type="button" aria-label="Previous"></button>
+    <button class="z r" id="nx" type="button" aria-label="Next"></button>
+    <p class="cap" id="cap"></p>
+  </div>
+</div>
+
+<script>
+const R='bxuvnesh/bxuvnesh.github.io',API='https://api.github.com/repos/'+R+'/contents/',$=s=>document.querySelector(s);
+let D={highlights:[]},hi=0,ix=0,tm,cur='',aud=new Audio();
+const vis=h=>h.items.filter(i=>!i.hidden);
+
+async function load(){
+  let ok=1;
+  try{const r=await fetch('highlights.json?'+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;D=await r.json()}catch(e){ok=0}
+  draw();
+  if(!ok)$('#rail').textContent='Could not load highlights.json. Check it is in the repo root, and open this page from your website rather than a local file.';
+}
+function draw(){
+  const rail=$('#rail');rail.textContent='';
+  D.highlights.forEach((h,i)=>{
+    if(h.hidden)return;const L=vis(h);
+    const b=document.createElement('button'),ring=document.createElement('span'),t=document.createElement('span');
+    b.type='button';b.className='hl'+(L.length?'':' empty');ring.className='ring';
+    if(L.length){const im=document.createElement('img');im.src=L[0].img;im.alt='';ring.append(im)}
+    t.textContent=h.title;b.append(ring,t);
+    b.onclick=()=>L.length&&openV(i);rail.append(b);
+  });
+  const sel=$('#sel'),keep=sel.value||0;sel.textContent='';
+  D.highlights.forEach((h,i)=>sel.add(new Option(h.title+(h.hidden?' (hidden)':''),i)));
+  sel.value=Math.min(keep,Math.max(D.highlights.length-1,0));songs();manage();
+}
+
+function openV(i){hi=i;ix=0;$('#v').classList.add('on');document.body.style.overflow='hidden';show()}
+function closeV(){clearTimeout(tm);aud.pause();cur='';$('#v').classList.remove('on');document.body.style.overflow=''}
+function show(){
+  clearTimeout(tm);
+  const L=vis(D.highlights[hi]),it=L[ix],dur=it.sec||(it.song?it.song.len:6);
+  $('#im').src=it.img;$('#cap').textContent=it.cap||'';
+  const bars=$('#bars');bars.textContent='';
+  L.forEach((_,k)=>{
+    const b=document.createElement('b'),f=document.createElement('i');
+    if(k<ix)b.className='d';
+    if(k===ix){b.className='a';b.style.setProperty('--t',dur+'s')}
+    b.append(f);bars.append(b);
+  });
+  if(it.silent){aud.pause();cur=''}
+  else if(it.song){
+    const k=it.song.src+'#'+(it.song.start||0);
+    if(k!==cur){
+      cur=k;
+      if(!aud.src.endsWith(it.song.src))aud.src=it.song.src;
+      const go=()=>{aud.currentTime=it.song.start||0;aud.play().catch(()=>{})};
+      aud.readyState>0?go():aud.addEventListener('loadedmetadata',go,{once:true});
+    }
+  }
+  tm=setTimeout(next,dur*1000);
+}
+function next(){ix<vis(D.highlights[hi]).length-1?(ix++,show()):closeV()}
+function prev(){if(ix>0)ix--;show()}
+$('#nx').onclick=next;$('#pv').onclick=prev;$('#x').onclick=closeV;
+$('#m').onclick=()=>{aud.muted=!aud.muted;$('#m').textContent=aud.muted?'Unmute':'Mute'};
+addEventListener('keydown',e=>{
+  if(!$('#v').classList.contains('on'))return;
+  if(e.key==='Escape')closeV();if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();
+});
+
+/* ---------- admin (only visible with ?admin) ---------- */
+const st=m=>$('#msg').textContent=m;
+const hdr=()=>({Authorization:'Bearer '+$('#tok').value.trim(),Accept:'application/vnd.github+json'});
+const b64=buf=>{let s='',u=new Uint8Array(buf);for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
+if(location.search.includes('admin')){$('#adm').classList.add('on');$('#tok').value=localStorage.getItem('ghtok')||''}
+
+function songs(){
+  const sel=$('#song'),H=D.highlights[$('#sel').value];sel.textContent='';
+  sel.add(new Option('Keep the previous song playing','keep'));
+  sel.add(new Option('Silence','silent'));
+  sel.add(new Option('Upload a new song','new'));
+  if(H)[...new Set(H.items.filter(i=>i.song).map(i=>i.song.src))].forEach(s=>sel.add(new Option('Reuse: '+s.split('/').pop(),s)));
+}
+$('#sel').onchange=()=>{songs();manage()};
+const btn=(t,f)=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.onclick=f;return b};
+async function act(msg,fn){try{st(msg+'...');await saveJSON(fn,msg);st('Saved. Live in about a minute.')}catch(e){st('Error: '+e.message)}}
+function manage(){
+  const box=$('#mg'),H=D.highlights[$('#sel').value];box.textContent='';if(!H)return;
+  $('#hh').textContent=H.hidden?'Show this highlight':'Hide this highlight';
+  H.items.forEach(it=>{
+    const r=document.createElement('div'),im=document.createElement('img'),s=document.createElement('span');
+    r.className='mi'+(it.hidden?' off':'');im.src=it.img;im.alt='';s.textContent=(it.hidden?'[hidden] ':'')+(it.cap||'No caption');
+    r.append(im,s);
+    const mv=d=>()=>act('Reorder',j=>{const a=find(j,H.id).items,x=a.findIndex(i=>i.img===it.img),y=x+d;if(x>=0&&y>=0&&y<a.length)a.splice(y,0,a.splice(x,1)[0])});
+    r.append(btn('Up',mv(-1)),btn('Down',mv(1)),
+      btn(it.hidden?'Show':'Hide',()=>act('Toggle photo',j=>{const t=find(j,H.id).items.find(i=>i.img===it.img);t.hidden=!t.hidden||undefined})),
+      btn('Delete',()=>del(H.id,it)));
+    box.append(r);
+  });
+}
+$('#hh').onclick=()=>{const id=D.highlights[$('#sel').value].id;act('Toggle highlight',j=>{const h=find(j,id);h.hidden=!h.hidden||undefined})};
+async function rm(path){
+  const r=await fetch(API+path+'?ref=main&t='+Date.now(),{headers:hdr()});if(!r.ok)return;
+  const d=await fetch(API+path,{method:'DELETE',headers:hdr(),body:JSON.stringify({message:'Delete media',sha:(await r.json()).sha,branch:'main'})});
+  if(!d.ok)throw new Error(path+' ('+d.status+')');
+}
+async function del(id,it){
+  if(!confirm('Delete this photo for good? This cannot be undone.'))return;
+  try{
+    st('Deleting...');
+    await saveJSON(j=>{const h=find(j,id);h.items=h.items.filter(i=>i.img!==it.img)},'Delete photo');
+    await rm(it.img);
+    if(it.song&&!D.highlights.some(h=>h.items.some(i=>i.song&&i.song.src===it.song.src)))await rm(it.song.src);
+    st('Deleted. Gone from the site in about a minute.');
+  }catch(e){st('Error: '+e.message)}
+}
+
+async function put(path,content,msg,sha){
+  const r=await fetch(API+path,{method:'PUT',headers:hdr(),body:JSON.stringify({message:msg,content,branch:'main',sha})});
+  if(!r.ok)throw new Error(path+' ('+r.status+') '+(await r.json()).message);
+}
+async function saveJSON(fn,msg){
+  const r=await fetch(API+'highlights.json?ref=main&t='+Date.now(),{headers:hdr()});
+  let sha,j={highlights:D.highlights};
+  if(r.ok){const f=await r.json();sha=f.sha;j=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(f.content.replace(/\n/g,'')),c=>c.charCodeAt(0))))}
+  else if(r.status!==404)throw new Error('Token problem ('+r.status+')');
+  fn(j);
+  await put('highlights.json',btoa(unescape(encodeURIComponent(JSON.stringify(j,null,1)))),msg,sha);
+  D=j;draw();
+}
+async function shrink(f){
+  const bm=await createImageBitmap(f,{imageOrientation:'from-image'}),s=Math.min(1,1920/Math.max(bm.width,bm.height)),c=document.createElement('canvas');
+  c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);
+  c.getContext('2d').drawImage(bm,0,0,c.width,c.height);
+  return new Promise(r=>c.toBlob(r,'image/jpeg',.88));
+}
+const find=(j,id)=>j.highlights.find(h=>h.id===id);
+
+$('#up').onclick=async()=>{try{
+  localStorage.setItem('ghtok',$('#tok').value.trim());
+  const H=D.highlights[$('#sel').value],pf=$('#pf').files[0],mode=$('#song').value,sf=$('#sf').files[0];
+  if(!pf)return st('Choose a photo first.');
+  if(mode==='new'&&!sf)return st('Choose a song file, or pick another song option.');
+  const id=Date.now(),img=`media/${H.id}/${id}.jpg`,it={img,cap:$('#cap2').value.trim()};
+  st('Resizing photo...');const blob=await shrink(pf);
+  st('Uploading photo...');await put(img,b64(await blob.arrayBuffer()),'Add photo');
+  const sec=+$('#sec').value;if(sec>0)it.sec=sec;
+  if(mode==='silent')it.silent=true;
+  else if(mode!=='keep'){
+    let src=mode;
+    if(mode==='new'){src=`media/${H.id}/${id}-${sf.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-')}`;st('Uploading song...');await put(src,b64(await sf.arrayBuffer()),'Add song')}
+    it.song={src,start:+$('#ss').value||0,len:Math.min(20,+$('#sl').value||20)};
+  }
+  st('Saving...');await saveJSON(j=>find(j,H.id).items.push(it),'Update highlights');
+  $('#pf').value='';$('#sf').value='';$('#cap2').value='';
+  st('Done. It will be live in about a minute.');
+}catch(e){st('Error: '+e.message)}};
+
+$('#ren').onclick=async()=>{try{
+  const H=D.highlights[$('#sel').value],t=$('#tt').value.trim();if(!t)return st('Type a title first.');
+  await saveJSON(j=>find(j,H.id).title=t,'Rename highlight');$('#tt').value='';st('Title saved.');
+}catch(e){st('Error: '+e.message)}};
+
+$('#new').onclick=async()=>{try{
+  await saveJSON(j=>j.highlights.push({id:'h'+Date.now(),title:'New highlight',items:[]}),'New highlight');st('Highlight added. Rename it above.');
+}catch(e){st('Error: '+e.message)}};
+
+load();
+</script>
+</body>
+</html>
