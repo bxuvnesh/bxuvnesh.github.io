@@ -47,7 +47,7 @@ a.card:hover{border-color:var(--blue)}
 .chip{padding:1px 10px;font-size:.75rem;color:var(--blue);border:1px solid #94b0c455;border-radius:999px}
 .half{grid-column:span 3}
 .wide{grid-column:span 6}
-.rings{display:flex;justify-content:space-between;margin-top:14px}
+.rings{display:flex;justify-content:center;gap:clamp(24px,6vw,56px);margin-top:14px}
 .rings i{width:clamp(52px,9vw,92px);aspect-ratio:1;border-radius:50%;border:2px solid var(--blue);background:var(--bg);box-shadow:inset 0 0 0 4px var(--slate)}
 
 .social{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
@@ -107,7 +107,7 @@ footer{padding-top:8px;color:var(--muted);font-size:.85rem;text-align:center}
       <a class="card wide" href="highlights.html">
         <div class="top"><h2>Highlights</h2></div>
         <p>My photos, in story circles.</p>
-        <div class="rings" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
       </a>
     </main>
 
@@ -121,5 +121,17 @@ footer{padding-top:8px;color:var(--muted);font-size:.85rem;text-align:center}
 
   <footer>© 2026 Bhuvnesh Kumar</footer>
 </div>
+<script>
+(async()=>{try{
+  const r=await fetch('highlights.json?'+Date.now(),{cache:'no-store'});if(!r.ok)return;
+  const hs=(await r.json()).highlights.filter(h=>!h.hidden).slice(0,6),box=document.querySelector('.rings');
+  box.textContent='';
+  hs.forEach(h=>{
+    const i=document.createElement('i'),p=h.items.find(x=>!x.hidden);
+    if(p){i.style.backgroundImage="url('"+encodeURI(p.img)+"')";i.style.backgroundSize='cover';i.style.backgroundPosition='center'}
+    box.append(i);
+  });
+}catch(e){}})();
+</script>
 </body>
 </html>
