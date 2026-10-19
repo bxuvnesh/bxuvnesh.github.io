@@ -29,12 +29,14 @@ async function mutate(fn,need){
   if(d.vault&&(need||K)){
     if(!K||K.s!==d.vault.s)throw new Error('Unlock first');
     try{v=JSON.parse(td(await dec(unb64(d.vault.b))))}catch(e){throw new Error('Vault could not be opened. Unlock again.')}
+    v.posts=v.posts||[];
   }
-  const s0=JSON.stringify(d),s1=JSON.stringify(u),sv=JSON.stringify(v),ps=JSON.stringify(d.posts),c={pub:d.posts,unl:u.posts,prv:v.posts,d,after:[],force:0};
+  const s0=JSON.stringify(d),s1=JSON.stringify(u),sv=JSON.stringify(v),ps=JSON.stringify(d.posts),nu=u.posts.length,c={pub:d.posts,unl:u.posts,prv:v.posts,d,v,after:[],force:0};
   await fn(c);
   if(c.force||JSON.stringify(v)!==sv){if(!K)throw new Error('Unlock first');d.vault={s:K.s,b:b64(await enc(te(JSON.stringify(v))))}}
   const save=(p,o,s,x)=>JSON.stringify(o)!==s?put(p,b64(te(JSON.stringify(o,null,1))),'Update daily',x):0;
-  await save('daily.json',d,s0,a.sha);await save('unlisted.json',u,s1,b.sha);
+  /* the file that gains a post is written first, so a failure in between can duplicate a post but never lose one */
+  if(u.posts.length>nu){await save('unlisted.json',u,s1,b.sha);await save('daily.json',d,s0,a.sha)}else{await save('daily.json',d,s0,a.sha);await save('unlisted.json',u,s1,b.sha)}
   for(const f of c.after)await f();
   D=d;U=u;V=v.posts;draw();
   if(JSON.stringify(d.posts)!==ps){try{await syndicate(d)}catch(e){return e.message}}
@@ -71,7 +73,7 @@ async function chpw(pw){
   const old=K,s=crypto.getRandomValues(new Uint8Array(16)),nk={key:await derive(pw,s),s:b64(s)};
   try{await mutate(async c=>{
     const jobs=[];
-    for(const p of c.prv)for(const f of['img','aud'])if(p[f])jobs.push([p,f,await dec(await raw(p[f])),p[f]]);
+    for(const p of[...c.prv,...(c.v.highlights||[]).flatMap(h=>h.items)])for(const f of['img','aud'])if(p[f])jobs.push([p,f,await dec(await raw(p[f])),p[f]]);
     K=nk;
     for(const[p,f,bytes,oldp]of jobs){p[f]=`media/daily/${rid()}.enc`;await put(p[f],b64(await enc(bytes)),'Re-encrypt media');c.after.push(()=>rm(oldp))}
     c.force=1;
@@ -118,7 +120,7 @@ async function unlock(pw){
   let j={};try{const r=await fetch('daily.json?'+Date.now(),{cache:'no-store'});if(r.ok)j=await r.json()}catch(e){}
   if(j.vault){
     K={key:await derive(pw,unb64(j.vault.s)),s:j.vault.s};
-    try{V=JSON.parse(td(await dec(unb64(j.vault.b)))).posts}catch(e){K=null;throw new Error('Wrong passphrase')}
+    try{V=JSON.parse(td(await dec(unb64(j.vault.b)))).posts||[]}catch(e){K=null;throw new Error('Wrong passphrase')}
   }else{
     if(pw.length<12)throw new Error('Use a longer passphrase: 12+ characters, ideally 4 random words');
     if(prompt('No vault yet. Type the passphrase again to confirm. It cannot be recovered.')!==pw)throw new Error('Passphrases did not match');
@@ -175,7 +177,7 @@ function draw(){
   if(sk){const n=streak();sk.textContent=n?`Day ${n} locked in 🔥`:(ADMIN?'No streak yet. Post today.':'')}
   const f=$('#feed'),shown=L.filter(x=>!ft||x[0].tag===ft);
   f.textContent='';
-  if(!shown.length)f.textContent='Nothing here yet.';
+  if(!shown.length&&!(MORE&&(U.highlights||[]).some(h=>!h.hidden)))f.textContent='Nothing here yet.';
   shown.forEach(([p,lv])=>{
     const a=el('article','post'),m=el('div','meta');a.id='p'+p.id;
     if(p.pin)m.append(el('span','pin','📌 Pinned'));
@@ -187,6 +189,20 @@ function draw(){
     if(p.img){const im=el('img','ph');im.alt='';im.loading='lazy';a.append(im);media(im,p.img,lv,'image/jpeg')}
     if(p.aud){const au=el('audio','au');au.controls=true;au.preload='none';a.append(au);media(au,p.aud,lv,p.ae==='m4a'?'audio/mp4':'audio/mpeg')}
     if(ADMIN){const x=el('div','act');x.append(btn(p.pin?'Unpin':'Pin',()=>pin(p,lv)));Object.keys(LV).filter(k=>k!==lv).forEach(k=>x.append(btn('Make '+LV[k].toLowerCase(),()=>move(p,lv,k))));x.append(btn('Delete',()=>del(p,lv)));a.append(x)}
+    f.append(a);
+  });
+  hlblock(f);
+}
+/* unlisted highlights, shown on more.html as plain photo galleries */
+function hlblock(f){
+  if(!MORE)return;
+  (U.highlights||[]).filter(h=>!h.hidden).forEach(h=>{
+    const a=el('article','post'),m=el('div','meta');m.append(el('span','tag',h.title));a.append(m);
+    h.items.filter(i=>!i.hidden).forEach(i=>{
+      const im=el('img','ph');im.alt='';im.loading='lazy';im.src=i.img;a.append(im);
+      if(i.cap)a.append(el('p','txt',i.cap));
+      if(i.song&&!i.silent){const au=el('audio','au');au.controls=true;au.preload='none';au.src=i.song.src;a.append(au)}
+    });
     f.append(a);
   });
 }

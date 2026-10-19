@@ -27,6 +27,8 @@ nav a.soon{opacity:.4;pointer-events:none}
 footer{padding-top:8px;color:var(--muted);font-size:.85rem;text-align:center}
 h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw,3.6rem);letter-spacing:-.02em;text-align:center;color:var(--blue);text-shadow:0 0 28px #94b0c455}
 .sub{text-align:center;color:var(--muted);margin-top:4px}
+.more{text-align:center;margin-top:28px;font-size:.9rem;color:var(--muted)}
+.more a:hover{color:var(--ice)}
 .rail{display:flex;flex-wrap:wrap;justify-content:center;gap:32px;margin-top:36px}
 .hl{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;color:inherit;font:inherit;cursor:pointer}
 .ring{width:clamp(92px,24vw,128px);aspect-ratio:1;padding:4px;border-radius:50%;border:2px solid var(--blue);box-shadow:0 0 28px #94b0c444;background:var(--slate)}
@@ -83,11 +85,16 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw
     <h1>Highlights</h1>
     <p class="sub">Tap a circle to watch.</p>
     <div class="rail" id="rail"></div>
+    <p class="more"><a href="more.html">More highlights</a></p>
 
     <section class="adm" id="adm" aria-label="Admin">
       <h2>Admin</h2>
       <label for="tok">GitHub token (stays in this browser only)</label>
       <input id="tok" type="password" autocomplete="off" placeholder="github_pat_...">
+      <label for="pw">Passphrase (only needed for private highlights)</label>
+      <input id="pw" type="password" autocomplete="off">
+      <button class="b alt" id="ul" type="button">Unlock</button>
+      <button class="b alt" id="lk" type="button">Lock</button>
       <label for="sel">Highlight</label>
       <select id="sel"></select>
       <label for="tt">Rename this highlight</label>
@@ -95,6 +102,7 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw
       <button class="b alt" id="ren" type="button">Save title</button>
       <button class="b alt" id="new" type="button">New highlight</button>
       <button class="b alt" id="hh" type="button">Hide this highlight</button>
+      <div id="lvb"></div>
       <label>Photos in this highlight</label>
       <div class="mg" id="mg"></div>
       <label for="pf">Photo</label>
@@ -131,36 +139,43 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw
 
 <script>
 const R='bxuvnesh/bxuvnesh.github.io',API='https://api.github.com/repos/'+R+'/contents/',$=s=>document.querySelector(s);
-let D={highlights:[]},hi=0,ix=0,tm,cur='',aud=new Audio();
+let D={highlights:[]},P={pub:[],unl:[],prv:[]},K=null,hi=0,ix=0,tm,cur='',aud=new Audio();
+const ADMIN=location.search.includes('admin'),BL=new Map(),LVM=new WeakMap(),LVN={pub:'Public',unl:'Unlisted',prv:'Private'};
 const vis=h=>h.items.filter(i=>!i.hidden);
 
 async function load(){
   let ok=1;
-  try{const r=await fetch('highlights.json?'+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;D=await r.json()}catch(e){ok=0}
-  draw();
+  try{const r=await fetch('highlights.json?'+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;P.pub=(await r.json()).highlights||[]}catch(e){ok=0}
+  if(ADMIN)try{const r=await fetch('unlisted.json?'+Date.now(),{cache:'no-store'});if(r.ok)P.unl=(await r.json()).highlights||[]}catch(e){}
+  rebuild();draw();
   if(!ok)$('#rail').textContent='Could not load highlights.json. Check it is in the repo root, and open this page from your website rather than a local file.';
 }
+/* D.highlights is what the page draws: public ones for visitors, plus unlisted and (once unlocked) private ones for you */
+function rebuild(){D.highlights=[...P.pub,...P.unl,...P.prv];['pub','unl','prv'].forEach(k=>P[k].forEach(h=>LVM.set(h,k)))}
+const lvOf=h=>LVM.get(h)||'pub',tag=h=>lvOf(h)==='pub'?'':' ('+LVN[lvOf(h)].toLowerCase()+')';
+const blob=async p=>{if(!BL.has(p))BL.set(p,URL.createObjectURL(new Blob([await dec(await raw(p))],{type:'image/jpeg'})));return BL.get(p)};
+const setSrc=(im,it,lv)=>{if(lv!=='prv')im.src=it.img;else blob(it.img).then(u=>im.src=u).catch(()=>{})};
 function draw(){
   const rail=$('#rail');rail.textContent='';
   D.highlights.forEach((h,i)=>{
     if(h.hidden)return;const L=vis(h);
     const b=document.createElement('button'),ring=document.createElement('span'),t=document.createElement('span');
     b.type='button';b.className='hl'+(L.length?'':' empty');ring.className='ring';
-    if(L.length){const im=document.createElement('img');im.src=L[0].img;im.alt='';ring.append(im)}
-    t.textContent=h.title;b.append(ring,t);
+    if(L.length){const im=document.createElement('img');setSrc(im,L[0],lvOf(h));im.alt='';ring.append(im)}
+    t.textContent=h.title+tag(h);b.append(ring,t);
     b.onclick=()=>L.length&&openV(i);rail.append(b);
   });
   const sel=$('#sel'),keep=sel.value||0;sel.textContent='';
-  D.highlights.forEach((h,i)=>sel.add(new Option(h.title+(h.hidden?' (hidden)':''),i)));
+  D.highlights.forEach((h,i)=>sel.add(new Option(h.title+tag(h)+(h.hidden?' (hidden)':''),i)));
   sel.value=Math.min(keep,Math.max(D.highlights.length-1,0));songs();manage();
 }
 
-function openV(i){hi=i;ix=0;$('#v').classList.add('on');document.body.style.overflow='hidden';show()}
+async function openV(i){const H=D.highlights[i];if(lvOf(H)==='prv')try{await Promise.all(vis(H).map(it=>blob(it.img)))}catch(e){return}hi=i;ix=0;$('#v').classList.add('on');document.body.style.overflow='hidden';show()}
 function closeV(){clearTimeout(tm);aud.pause();cur='';$('#v').classList.remove('on');document.body.style.overflow=''}
 function show(){
   clearTimeout(tm);
   const L=vis(D.highlights[hi]),it=L[ix],dur=it.sec||(it.song?it.song.len:6);
-  $('#im').src=it.img;$('#cap').textContent=it.cap||'';
+  $('#im').src=BL.get(it.img)||it.img;$('#cap').textContent=it.cap||'';
   const bars=$('#bars');bars.textContent='';
   L.forEach((_,k)=>{
     const b=document.createElement('b'),f=document.createElement('i');
@@ -193,7 +208,37 @@ addEventListener('keydown',e=>{
 const st=m=>$('#msg').textContent=m;
 const hdr=()=>({Authorization:'Bearer '+$('#tok').value.trim(),Accept:'application/vnd.github+json'});
 const b64=buf=>{let s='',u=new Uint8Array(buf);for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
-if(location.search.includes('admin')){$('#adm').classList.add('on');$('#tok').value=localStorage.getItem('ghtok')||''}
+/* crypto and GitHub helpers, same as the daily page: passphrase -> AES-256-GCM, key kept in memory only */
+const te=s=>new TextEncoder().encode(s),td=u=>new TextDecoder().decode(u);
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const rid=()=>[...crypto.getRandomValues(new Uint8Array(8))].map(x=>x.toString(16).padStart(2,'0')).join('');
+const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return''}};
+async function derive(pw,salt){const m=await crypto.subtle.importKey('raw',te(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:600000,hash:'SHA-256'},m,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function enc(u){const iv=crypto.getRandomValues(new Uint8Array(12)),c=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},K.key,u)),o=new Uint8Array(12+c.length);o.set(iv);o.set(c,12);return o}
+async function dec(u){return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:u.subarray(0,12)},K.key,u.subarray(12)))}
+async function rd(p){const r=await fetch(API+p+'?ref=main&t='+Date.now(),{headers:hdr()});if(r.status===404)return{};if(!r.ok)throw new Error('Token problem ('+r.status+')');const f=await r.json(),t=td(unb64(f.content.replace(/\n/g,'')));return{sha:f.sha,t,j:p.endsWith('.json')?JSON.parse(t):undefined}}
+async function raw(path){const r=await fetch(API+path+'?ref=main&t='+Date.now(),{headers:{...hdr(),Accept:'application/vnd.github.raw'}});if(!r.ok)throw new Error(path+' ('+r.status+')');return new Uint8Array(await r.arrayBuffer())}
+/* song tags: ID3 (title, artist, cover art) from mp3; udta/meta/uuid boxes (iTunes buyer name, Apple ID) from m4a, blanked in place so the file still plays */
+function scrubAudio(u,ext){
+  u=u.slice();
+  if(ext==='mp3'){
+    let a=0,b=u.length;
+    if(u[0]===0x49&&u[1]===0x44&&u[2]===0x33)a=10+((u[6]&127)<<21|(u[7]&127)<<14|(u[8]&127)<<7|(u[9]&127))+(u[5]&16?10:0);
+    if(b-a>=128&&u[b-128]===0x54&&u[b-127]===0x41&&u[b-126]===0x47)b-=128;
+    if(a>=b)throw new Error('Unreadable mp3, upload blocked');
+    return u.subarray(a,b);
+  }
+  const dv=new DataView(u.buffer),ty=o=>String.fromCharCode(u[o+4],u[o+5],u[o+6],u[o+7]);
+  if(u.length<12||ty(0)!=='ftyp')throw new Error('Not an m4a file, upload blocked');
+  const walk=(s,e)=>{for(let o=s;o<e;){
+    const n=dv.getUint32(o);if(n<8||o+n>e)throw new Error('Unreadable m4a, upload blocked');
+    const t=ty(o);
+    if(t==='udta'||t==='meta'||t==='uuid'){u.set([0x66,0x72,0x65,0x65],o+4);u.fill(0,o+8,o+n)}
+    else if(t==='moov'||t==='trak')walk(o+8,o+n);
+    o+=n}};
+  walk(0,u.length);return u;
+}
+if(ADMIN){$('#adm').classList.add('on');$('#tok').value=ls('ghtok')||''}
 
 function songs(){
   const sel=$('#song'),H=D.highlights[$('#sel').value];sel.textContent='';
@@ -206,11 +251,12 @@ $('#sel').onchange=()=>{songs();manage()};
 const btn=(t,f)=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.onclick=f;return b};
 async function act(msg,fn){try{st(msg+'...');await saveJSON(fn,msg);st('Saved. Live in about a minute.')}catch(e){st('Error: '+e.message)}}
 function manage(){
-  const box=$('#mg'),H=D.highlights[$('#sel').value];box.textContent='';if(!H)return;
+  const box=$('#mg'),H=D.highlights[$('#sel').value];box.textContent='';$('#lvb').textContent='';if(!H)return;
   $('#hh').textContent=H.hidden?'Show this highlight':'Hide this highlight';
+  const lv=lvOf(H);Object.keys(LVN).filter(k=>k!==lv).forEach(k=>{const b=btn(k==='prv'?'Lock (make private)':'Make '+LVN[k].toLowerCase(),()=>lvmove(H.id,lv,k));b.className='b alt';$('#lvb').append(b)});
   H.items.forEach(it=>{
     const r=document.createElement('div'),im=document.createElement('img'),s=document.createElement('span');
-    r.className='mi'+(it.hidden?' off':'');im.src=it.img;im.alt='';s.textContent=(it.hidden?'[hidden] ':'')+(it.cap||'No caption');
+    r.className='mi'+(it.hidden?' off':'');setSrc(im,it,lvOf(H));im.alt='';s.textContent=(it.hidden?'[hidden] ':'')+(it.cap||'No caption');
     r.append(im,s);
     const mv=d=>()=>act('Reorder',j=>{const a=find(j,H.id).items,x=a.findIndex(i=>i.img===it.img),y=x+d;if(x>=0&&y>=0&&y<a.length)a.splice(y,0,a.splice(x,1)[0])});
     r.append(btn('Up',mv(-1)),btn('Down',mv(1)),
@@ -241,13 +287,23 @@ async function put(path,content,msg,sha){
   if(!r.ok)throw new Error(path+' ('+r.status+') '+(await r.json()).message);
 }
 async function saveJSON(fn,msg){
-  const r=await fetch(API+'highlights.json?ref=main&t='+Date.now(),{headers:hdr()});
-  let sha,j={highlights:D.highlights};
-  if(r.ok){const f=await r.json();sha=f.sha;j=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(f.content.replace(/\n/g,'')),c=>c.charCodeAt(0))))}
-  else if(r.status!==404)throw new Error('Token problem ('+r.status+')');
-  fn(j);
-  await put('highlights.json',btoa(unescape(encodeURIComponent(JSON.stringify(j,null,1)))),msg,sha);
-  D=j;draw();
+  const[a,b,e]=await Promise.all([rd('highlights.json'),rd('unlisted.json'),rd('daily.json')]);
+  const j=a.j||{highlights:[]},u=b.j||{},d=e.j||{};
+  j.highlights=j.highlights||[];u.highlights=u.highlights||[];d.posts=d.posts||[];d.days=d.days||[];
+  let v={posts:[],highlights:[]};
+  if(d.vault&&K){
+    if(K.s!==d.vault.s)throw new Error('The vault changed. Unlock again.');
+    try{v=JSON.parse(td(await dec(unb64(d.vault.b))))}catch(x){throw new Error('Vault could not be opened. Unlock again.')}
+    v.posts=v.posts||[];v.highlights=v.highlights||[];
+  }
+  const c={pub:j.highlights,unl:u.highlights,prv:v.highlights,after:[]},n=[c.pub.length,c.unl.length,c.prv.length],s=[JSON.stringify(j),JSON.stringify(u),JSON.stringify(d),JSON.stringify(v)];
+  await fn({highlights:[...c.pub,...c.unl,...c.prv]},c);
+  if(JSON.stringify(v)!==s[3]){if(!K)throw new Error('Unlock first (passphrase above)');d.vault={s:K.s,b:b64(await enc(te(JSON.stringify(v))))}}
+  /* the file that gains a highlight is written first, so a failure in between can duplicate one but never lose one */
+  const W=[['highlights.json',j,s[0],a.sha,c.pub.length-n[0]],['unlisted.json',u,s[1],b.sha,c.unl.length-n[1]],['daily.json',d,s[2],e.sha,c.prv.length-n[2]]].sort((x,y)=>y[4]-x[4]);
+  for(const[p,o,s0,x]of W)if(JSON.stringify(o)!==s0)await put(p,b64(te(JSON.stringify(o,null,1))),msg,x);
+  for(const f of c.after)await f();
+  P={pub:c.pub,unl:c.unl,prv:K?c.prv:[]};rebuild();draw();
 }
 async function shrink(f){
   const bm=await createImageBitmap(f,{imageOrientation:'from-image'}),s=Math.min(1,1920/Math.max(bm.width,bm.height)),c=document.createElement('canvas');
@@ -276,19 +332,25 @@ function scrub(u){
 const find=(j,id)=>j.highlights.find(h=>h.id===id);
 
 $('#up').onclick=async()=>{try{
-  localStorage.setItem('ghtok',$('#tok').value.trim());
+  ls('ghtok',$('#tok').value.trim());
   const H=D.highlights[$('#sel').value],pf=$('#pf').files[0],mode=$('#song').value,sf=$('#sf').files[0];
   if(!pf)return st('Choose a photo first.');
   if(mode==='new'&&!sf)return st('Choose a song file, or pick another song option.');
-  const id=Date.now(),img=`media/${H.id}/${id}.jpg`,it={img,cap:$('#cap2').value.trim()};
+  if(mode==='new'&&!/\.(mp3|m4a)$/i.test(sf.name))return st('Songs must be .mp3 or .m4a files.');
+  const lv=lvOf(H);if(lv==='prv'&&!K)return st('Unlock first (passphrase above).');
+  const id=Date.now(),img=lv==='prv'?`media/p/${rid()}.enc`:`media/${H.id}/${id}.jpg`,it={img,cap:$('#cap2').value.trim()};
   st('Resizing photo...');const blob=await shrink(pf);
   st('Removing metadata...');const clean=scrub(new Uint8Array(await blob.arrayBuffer()));
-  st('Uploading photo...');await put(img,b64(clean),'Add photo');
+  st('Uploading photo...');await put(img,b64(lv==='prv'?await enc(clean):clean),'Add photo');
   const sec=+$('#sec').value;if(sec>0)it.sec=sec;
   if(mode==='silent')it.silent=true;
   else if(mode!=='keep'){
     let src=mode;
-    if(mode==='new'){src=`media/${H.id}/${id}-${sf.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-')}`;st('Uploading song...');await put(src,b64(await sf.arrayBuffer()),'Add song')}
+    if(mode==='new'){
+      const ext=/\.m4a$/i.test(sf.name)?'m4a':'mp3';
+      src=`media/${H.id}/${id}-${sf.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-')}`;st('Removing song tags...');
+      const song=scrubAudio(new Uint8Array(await sf.arrayBuffer()),ext);st('Uploading song...');await put(src,b64(song),'Add song');
+    }
     it.song={src,start:+$('#ss').value||0,len:Math.min(20,+$('#sl').value||20)};
   }
   st('Saving...');await saveJSON(j=>find(j,H.id).items.push(it),'Update highlights');
@@ -304,6 +366,34 @@ $('#ren').onclick=async()=>{try{
 $('#new').onclick=async()=>{try{
   await saveJSON(j=>j.highlights.push({id:'h'+Date.now(),title:'New highlight',items:[]}),'New highlight');st('Highlight added. Rename it above.');
 }catch(e){st('Error: '+e.message)}};
+
+/* ---------- levels: public, unlisted (shown on more.html), private (encrypted in the vault) ---------- */
+async function unlock(pw){
+  let j={};try{const r=await fetch('daily.json?'+Date.now(),{cache:'no-store'});if(r.ok)j=await r.json()}catch(e){}
+  if(j.vault){
+    K={key:await derive(pw,unb64(j.vault.s)),s:j.vault.s};
+    try{P.prv=JSON.parse(td(await dec(unb64(j.vault.b)))).highlights||[]}catch(e){K=null;throw new Error('Wrong passphrase')}
+  }else{
+    if(pw.length<12)throw new Error('Use a longer passphrase: 12+ characters, ideally 4 random words');
+    if(prompt('No vault yet. Type the passphrase again to confirm. It cannot be recovered.')!==pw)throw new Error('Passphrases did not match');
+    const s=crypto.getRandomValues(new Uint8Array(16));K={key:await derive(pw,s),s:b64(s)};P.prv=[];
+  }
+  rebuild();draw();
+}
+$('#ul').onclick=async()=>{try{st('Unlocking...');await unlock($('#pw').value);$('#pw').value='';st('Unlocked.')}catch(e){st('Error: '+e.message)}};
+$('#lk').onclick=()=>{K=null;P.prv=[];BL.forEach(u=>URL.revokeObjectURL(u));BL.clear();rebuild();draw();st('Locked.')};
+const lvmove=(id,from,to)=>act('Moving',async(all,c)=>{
+  if((from==='prv'||to==='prv')&&!K)throw new Error('Unlock first (passphrase above)');
+  const i=c[from].findIndex(h=>h.id===id);if(i<0)throw new Error('Highlight not found');
+  const h=c[from].splice(i,1)[0];
+  if((from==='prv')!==(to==='prv'))for(const it of h.items){
+    const old=it.img,bytes=from==='prv'?await dec(await raw(old)):await raw(old);
+    it.img=to==='prv'?`media/p/${rid()}.enc`:`media/${h.id}/${rid()}.jpg`;
+    await put(it.img,b64(to==='prv'?await enc(bytes):bytes),'Move media');
+    c.after.push(()=>rm(old));
+  }
+  c[to].push(h);
+});
 
 load();
 </script>
