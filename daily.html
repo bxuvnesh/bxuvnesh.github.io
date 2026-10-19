@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/favicon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily - Bhuvnesh Kumar</title>
+<meta name="description" content="Bhuvnesh Kumar’s daily notes: everyday stuff and the occasional rant.">
+<link rel="canonical" href="https://bxuvnesh.github.io/daily.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="daily.css">
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="achievements.html" class="soon">Achievements</a>
+    <a href="daily.html" aria-current="page">Daily</a>
+    <a href="highlights.html">Highlights</a>
+  </nav>
+  <div class="stack">
+    <h1>Daily</h1>
+    <p class="sub">Everyday stuff and the occasional rant.</p>
+    <p class="streak" id="streak"></p>
+    <div class="tags" id="tags"></div>
+    <div id="feed" aria-live="polite"></div>
+    <p class="more"><a href="more.html">More posts</a></p>
+    <section class="adm" id="adm" aria-label="Admin">
+      <h2>Admin</h2>
+      <label for="tok">GitHub token (same as Highlights, stays in this browser)</label>
+      <input id="tok" type="password" autocomplete="off" placeholder="github_pat_...">
+      <label for="pw">Passphrase for private posts</label>
+      <input id="pw" type="password" autocomplete="off">
+      <button class="b alt" id="ul" type="button">Unlock</button>
+      <button class="b alt" id="lk" type="button">Lock</button>
+      <label for="lv">Level</label>
+      <select id="lv">
+        <option value="prv">Private (only you)</option>
+        <option value="unl">Unlisted (link only, not indexed)</option>
+        <option value="pub">Public</option>
+      </select>
+      <label for="tg">Tag (optional)</label>
+      <input id="tg" placeholder="study, rant, random">
+      <label for="tx">Post</label>
+      <textarea id="tx" rows="5"></textarea>
+      <label for="pf">Photo (optional)</label>
+      <input id="pf" type="file" accept="image/*">
+      <button class="b" id="up" type="button">Post</button>
+      <p id="msg" role="status"></p>
+    </section>
+  </div>
+  <footer>© 2026 Bhuvnesh Kumar</footer>
+</div>
+<script src="daily.js"></script>
+</body>
+</html>

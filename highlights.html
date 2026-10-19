@@ -75,7 +75,7 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw
   <nav aria-label="Main">
     <a href="index.html">Home</a>
     <a href="achievements.html" class="soon">Achievements</a>
-    <a href="daily.html" class="soon">Daily</a>
+    <a href="daily.html">Daily</a>
     <a href="highlights.html" aria-current="page">Highlights</a>
   </nav>
 
@@ -255,6 +255,24 @@ async function shrink(f){
   c.getContext('2d').drawImage(bm,0,0,c.width,c.height);
   return new Promise(r=>c.toBlob(r,'image/jpeg',.88));
 }
+/* second pass after shrink(): drops every metadata segment (EXIF/GPS, XMP, IPTC, ICC, comments); blocks the upload if the file looks wrong */
+function scrub(u){
+  if(u[0]!==0xFF||u[1]!==0xD8)throw new Error('Not a JPEG, upload blocked');
+  const keep=[u.subarray(0,2)];let i=2,ok=0;
+  while(i<u.length){
+    if(u[i]!==0xFF)throw new Error('Unreadable JPEG, upload blocked');
+    const m=u[i+1];
+    if(m===0xFF){i++;continue}
+    if(m===0xDA){keep.push(u.subarray(i));ok=1;break}
+    const n=(u[i+2]<<8|u[i+3])+2;
+    if(!((m>=0xE1&&m<=0xEF)||m===0xFE))keep.push(u.subarray(i,i+n));
+    i+=n;
+  }
+  if(!ok)throw new Error('Unreadable JPEG, upload blocked');
+  const out=new Uint8Array(keep.reduce((a,k)=>a+k.length,0));let o=0;
+  keep.forEach(k=>{out.set(k,o);o+=k.length});
+  return out;
+}
 const find=(j,id)=>j.highlights.find(h=>h.id===id);
 
 $('#up').onclick=async()=>{try{
@@ -264,7 +282,8 @@ $('#up').onclick=async()=>{try{
   if(mode==='new'&&!sf)return st('Choose a song file, or pick another song option.');
   const id=Date.now(),img=`media/${H.id}/${id}.jpg`,it={img,cap:$('#cap2').value.trim()};
   st('Resizing photo...');const blob=await shrink(pf);
-  st('Uploading photo...');await put(img,b64(await blob.arrayBuffer()),'Add photo');
+  st('Removing metadata...');const clean=scrub(new Uint8Array(await blob.arrayBuffer()));
+  st('Uploading photo...');await put(img,b64(clean),'Add photo');
   const sec=+$('#sec').value;if(sec>0)it.sec=sec;
   if(mode==='silent')it.silent=true;
   else if(mode!=='keep'){
