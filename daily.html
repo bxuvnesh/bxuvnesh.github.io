@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="daily.css">
+<link rel="alternate" type="application/rss+xml" title="Daily - Bhuvnesh Kumar" href="feed.xml">
 </head>
 <body>
 <div class="wrap">
@@ -47,7 +48,13 @@
       <textarea id="tx" rows="5"></textarea>
       <label for="pf">Photo (optional)</label>
       <input id="pf" type="file" accept="image/*">
+      <label for="sf">Song (optional, .mp3 or .m4a, up to 10 MB)</label>
+      <input id="sf" type="file" accept=".mp3,.m4a,audio/mpeg,audio/mp4">
       <button class="b" id="up" type="button">Post</button>
+      <label for="np">Change passphrase (unlock first, then type the new one twice)</label>
+      <input id="np" type="password" autocomplete="new-password">
+      <input id="np2" type="password" autocomplete="new-password">
+      <button class="b alt" id="cp" type="button">Change passphrase</button>
       <p id="msg" role="status"></p>
     </section>
   </div>

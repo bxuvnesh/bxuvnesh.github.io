@@ -40,3 +40,5 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw
 .act button{padding:6px 10px;font:inherit;font-size:.78rem;color:var(--ice);background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer}
 .more{text-align:center;margin-top:22px;font-size:.9rem;color:var(--muted)}
 .more a:hover{color:var(--ice)}
+.au{display:block;width:100%;margin-top:12px}
+.pin{color:var(--blue);font-weight:600}
