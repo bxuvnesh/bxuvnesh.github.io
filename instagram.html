@@ -4,21 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Bhuvnesh Kumar. Instagram is on pause for now. The lion is currently locked in.">
-<meta name="theme-color" content="#0b0d12">
+<meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/png" href="/favicon.png" sizes="192x192">
 <title>Bhuvnesh Kumar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,500&family=Jost:wght@300;400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
   :root {
-    --charcoal: #0b0d12;
-    --slate: #171c24;
-    --slate-mid: #333e4a;
-    --blue: #8daec2;
-    --ice: #e3e9f0;
-    --line: rgba(227, 233, 240, 0.2);
-    --text-dim: rgba(227, 233, 240, 0.62);
+    --charcoal: var(--bg);
+    --line: color-mix(in srgb, var(--ice) 20%, transparent);
+    --text-dim: color-mix(in srgb, var(--ice) 62%, transparent);
     --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
     --sans: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
@@ -48,23 +45,23 @@
   .glow.a {
     top: -6%; left: -30%;
     width: 85vmax; height: 26vmax;
-    background: radial-gradient(closest-side, rgba(141, 174, 194, 0.2), transparent);
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--blue) 16%, transparent), transparent);
   }
   .glow.b {
     right: -35%; bottom: 0;
     width: 70vmax; height: 18vmax;
-    background: radial-gradient(closest-side, rgba(51, 62, 74, 0.7), transparent);
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 14%, transparent), transparent);
   }
   .glow.c {
     left: -30%; top: 55%;
     width: 60vmax; height: 16vmax;
-    background: radial-gradient(closest-side, rgba(23, 28, 36, 0.9), transparent);
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 8%, transparent), transparent);
   }
   .arc {
     position: absolute;
     top: 50%; left: 50%;
     width: 150vmin; height: 150vmin;
-    border: 1px solid rgba(227, 233, 240, 0.07);
+    border: 1px solid color-mix(in srgb, var(--ice) 7%, transparent);
     border-radius: 50%;
     transform: translate(-38%, -45%);
   }
@@ -104,7 +101,7 @@
     border: 3px solid var(--blue);
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 0 36px rgba(141, 174, 194, 0.25);
+    box-shadow: 0 0 36px color-mix(in srgb, var(--blue) 30%, transparent);
   }
 
   .handle {
@@ -137,7 +134,7 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 0 26px rgba(141, 174, 194, 0.3));
+    filter: drop-shadow(0 0 26px color-mix(in srgb, var(--blue) 35%, transparent));
   }
 
   .tagline {
@@ -219,7 +216,7 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    background: rgba(23, 28, 36, 0.92);
+    background: color-mix(in srgb, var(--slate) 92%, transparent);
     border-top: 1px solid var(--line);
   }
   .term-in {

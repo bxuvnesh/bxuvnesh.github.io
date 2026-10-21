@@ -13,11 +13,11 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Bhuvnesh Kumar","url":"https://bxuvnesh.github.io/","image":"https://bxuvnesh.github.io/bhuvnesh-kumar.jpg","sameAs":["https://www.linkedin.com/in/bhuvneshkumar-","https://github.com/bxuvnesh"]}
 </script>
+<link rel="stylesheet" href="theme.css">
 <style>
-:root{--bg:#0b0e11;--slate:#171e25;--line:#36404a;--blue:#94b0c4;--ice:#e4e9f1;--muted:#9aa7b3;color-scheme:dark}
 *{box-sizing:border-box;margin:0}
 html{background:var(--bg)}
-body{font-family:Manrope,system-ui,sans-serif;color:var(--ice);background:radial-gradient(60rem 30rem at 50% -10%,#94b0c424,transparent),var(--bg);line-height:1.6}
+body{font-family:Manrope,system-ui,sans-serif;color:var(--ice);background:radial-gradient(60rem 30rem at 50% -10%,var(--glow-bg),transparent),var(--bg);line-height:1.6}
 a{color:inherit;text-decoration:none}
 a:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 
@@ -28,13 +28,13 @@ nav{display:flex;flex-wrap:wrap;justify-content:center;gap:28px;padding:8px 0;co
 nav a{position:relative}
 nav a:hover{color:var(--ice)}
 nav a[aria-current]{color:var(--ice);font-weight:600}
-nav a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--blue)}
+nav a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--accent))}
 nav a.soon{opacity:.4;pointer-events:none}
 
 .hero{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"photo handle" "photo name" "photo bio";column-gap:clamp(20px,4vw,44px);align-content:center;padding:clamp(24px,5vw,48px);background:var(--slate);border:1px solid var(--line);border-radius:28px;animation:rise .7s ease both}
-.photo{grid-area:photo;align-self:center;width:176px;height:176px;border-radius:50%;object-fit:cover;border:2px solid var(--blue);box-shadow:0 0 28px #94b0c444}
-.handle{grid-area:handle;justify-self:start;align-self:end;margin-bottom:14px;padding:6px 14px;font-weight:600;color:var(--blue);background:#94b0c41a;border:1px solid #94b0c444;border-radius:999px}
-h1{grid-area:name;font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.4rem,7.5vw,4.8rem);line-height:1.04;letter-spacing:-.02em;color:var(--blue);text-shadow:0 0 28px #94b0c455}
+.photo{grid-area:photo;align-self:center;width:176px;height:176px;border-radius:50%;object-fit:cover;border:2px solid var(--blue);box-shadow:0 0 28px var(--glow-ring)}
+.handle{grid-area:handle;justify-self:start;align-self:end;margin-bottom:14px;padding:6px 14px;font-weight:600;color:var(--blue);background:var(--tint);border:1px solid var(--glow-ring);border-radius:999px}
+h1{grid-area:name;font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.4rem,7.5vw,4.8rem);line-height:1.04;letter-spacing:-.02em;color:var(--blue);text-shadow:0 0 28px var(--edge)}
 .bio{grid-area:bio;align-self:start;max-width:40rem;margin-top:14px;color:var(--muted);font-size:1.1rem}
 
 .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:14px}
@@ -44,7 +44,7 @@ h1{grid-area:name;font-family:Fraunces,Georgia,serif;font-weight:700;font-size:c
 .card p{color:var(--muted);font-size:.95rem}
 a.card:hover{border-color:var(--blue)}
 .card.soon{pointer-events:none}
-.chip{padding:1px 10px;font-size:.75rem;color:var(--blue);border:1px solid #94b0c455;border-radius:999px}
+.chip{padding:1px 10px;font-size:.75rem;color:var(--blue);border:1px solid var(--edge);border-radius:999px}
 .half{grid-column:span 3}
 .wide{grid-column:span 6}
 .rings{display:flex;justify-content:center;gap:clamp(24px,6vw,56px);margin-top:14px}

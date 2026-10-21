@@ -1,0 +1,19 @@
+/* Site theme: "Electric ice". Change colours here and every page follows. */
+:root{
+  --bg:#05070a;        /* page background (near-black) */
+  --slate:#0a1119;     /* cards and panels */
+  --line:#1e3040;      /* borders and dividers */
+  --blue:#22d3ee;      /* primary (cyan) */
+  --accent:#60a5fa;    /* secondary (blue) */
+  --ice:#e6f1ff;       /* main text */
+  --muted:#8a99ad;     /* secondary text */
+  color-scheme:dark;
+}
+
+/* Tinted versions of the primary, derived so they follow --blue */
+:root{
+  --tint:color-mix(in srgb,var(--blue) 10%,transparent);
+  --glow-bg:color-mix(in srgb,var(--blue) 12%,transparent);
+  --glow-ring:color-mix(in srgb,var(--blue) 28%,transparent);
+  --edge:color-mix(in srgb,var(--blue) 40%,transparent);
+}
