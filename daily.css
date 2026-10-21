@@ -14,7 +14,7 @@ nav a.soon{opacity:.4;pointer-events:none}
 footer{padding-top:8px;color:var(--muted);font-size:.85rem;text-align:center}
 h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw,3.6rem);letter-spacing:-.02em;text-align:center;color:var(--blue);text-shadow:0 0 28px var(--edge)}
 .sub{text-align:center;color:var(--muted);margin-top:4px}
-.adm{display:none;max-width:560px;margin:40px auto 0;padding:22px;background:var(--slate);border:1px solid var(--line);border-radius:18px}
+.adm{display:none;max-width:560px;margin:40px auto 0;padding:22px;background:var(--tile-bg);border:1px solid var(--tile-border);box-shadow:var(--tile-shadow);border-radius:18px}
 .adm.on{display:block}
 .adm h2{font-family:Fraunces,Georgia,serif;font-weight:500;margin-bottom:10px}
 .adm label{display:block;font-size:.85rem;color:var(--muted)}
@@ -25,10 +25,11 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,7vw
 .adm textarea{width:100%;padding:10px 12px;margin:4px 0 14px;font:inherit;color:var(--ice);background:var(--bg);border:1px solid var(--line);border-radius:10px;resize:vertical}
 .streak{text-align:center;margin-top:14px;color:var(--blue);font-weight:600}
 .tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
-.chip{padding:4px 12px;font:inherit;font-size:.82rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;cursor:pointer}
+.chip{padding:4px 12px;font:inherit;font-size:.82rem;color:var(--muted);background:none;border:1px solid var(--tile-border);border-radius:999px;cursor:pointer}
 .chip:hover,.chip.on{color:var(--ice);border-color:var(--blue)}
 #feed{display:grid;gap:14px;max-width:640px;margin:28px auto 0;color:var(--muted)}
-.post{padding:20px;color:var(--ice);background:var(--slate);border:1px solid var(--line);border-radius:18px}
+.post{padding:20px;color:var(--ice);background:var(--tile-bg);border:1px solid var(--tile-border);box-shadow:var(--tile-shadow);border-radius:18px;transition:box-shadow .2s,border-color .2s}
+.post:hover{border-color:var(--blue);box-shadow:var(--tile-shadow-hover)}
 .meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:.85rem;color:var(--muted)}
 .tag{color:var(--blue)}
 .bd{padding:1px 10px;font-size:.75rem;border:1px solid var(--line);border-radius:999px}

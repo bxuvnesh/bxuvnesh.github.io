@@ -17,3 +17,11 @@
   --glow-ring:color-mix(in srgb,var(--blue) 28%,transparent);
   --edge:color-mix(in srgb,var(--blue) 40%,transparent);
 }
+
+/* Tiles: dark like the page, with a glowing cyan edge for contrast */
+:root{
+  --tile-bg:linear-gradient(145deg,color-mix(in srgb,var(--blue) 7%,var(--bg)),var(--bg) 70%);
+  --tile-border:color-mix(in srgb,var(--blue) 38%,transparent);
+  --tile-shadow:0 0 22px color-mix(in srgb,var(--blue) 9%,transparent),inset 0 1px 0 color-mix(in srgb,var(--ice) 7%,transparent);
+  --tile-shadow-hover:0 0 30px color-mix(in srgb,var(--blue) 26%,transparent),inset 0 1px 0 color-mix(in srgb,var(--ice) 10%,transparent);
+}
