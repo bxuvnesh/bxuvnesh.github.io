@@ -1,12 +1,12 @@
-/* Site theme: "Electric ice". Change colours here and every page follows. */
+/* Site theme: "Cold violet". Change colours here and every page follows. */
 :root{
-  --bg:#05070a;        /* page background (near-black) */
-  --slate:#0a1119;     /* cards and panels */
-  --line:#1e3040;      /* borders and dividers */
-  --blue:#22d3ee;      /* primary (cyan) */
-  --accent:#60a5fa;    /* secondary (blue) */
-  --ice:#e6f1ff;       /* main text */
-  --muted:#8a99ad;     /* secondary text */
+  --bg:#07070d;        /* page background (near-black) */
+  --slate:#0f0f1c;     /* cards and panels */
+  --line:#2a2b45;      /* borders and dividers */
+  --blue:#a5b4fc;      /* primary (periwinkle) - name kept so no page needs editing */
+  --accent:#67e8f9;    /* secondary (aqua) */
+  --ice:#eef0ff;       /* main text */
+  --muted:#8b8fa8;     /* secondary text */
   color-scheme:dark;
 }
 
@@ -18,7 +18,7 @@
   --edge:color-mix(in srgb,var(--blue) 40%,transparent);
 }
 
-/* Tiles: dark like the page, with a glowing cyan edge for contrast */
+/* Tiles: dark like the page, with a glowing periwinkle edge for contrast */
 :root{
   --tile-bg:linear-gradient(145deg,color-mix(in srgb,var(--blue) 7%,var(--bg)),var(--bg) 70%);
   --tile-border:color-mix(in srgb,var(--blue) 38%,transparent);
