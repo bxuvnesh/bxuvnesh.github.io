@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 · Bhuvnesh Kumar</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=JetBrains+Mono:wght@400&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/theme.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html{background:var(--bg)}
+body{font-family:Manrope,system-ui,sans-serif;color:var(--ice);background:radial-gradient(60rem 30rem at 50% -10%,var(--glow-bg),transparent),var(--bg);line-height:1.6}
+a:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+.wrap{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:32px 20px}
+.stack{width:100%;max-width:560px;text-align:center;animation:rise .7s ease both}
+
+h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-variation-settings:"opsz" 40;font-size:clamp(5.5rem,24vw,9rem);line-height:1;letter-spacing:-.03em;color:var(--blue);text-shadow:0 0 40px var(--edge)}
+
+.term{margin:22px auto 0;padding:18px 22px;text-align:left;background:var(--tile-bg);border:1px solid var(--tile-border);box-shadow:var(--tile-shadow);border-radius:18px;font-family:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.85rem;line-height:1.7;overflow-wrap:anywhere}
+.who{color:var(--blue)}
+.dollar{margin-right:1ch}
+.err{color:var(--muted)}
+.cursor{display:inline-block;width:.6em;height:1.1em;margin-left:2px;vertical-align:text-bottom;background:var(--ice);animation:blink 1.1s steps(1) infinite}
+
+.sub{margin-top:28px;color:var(--muted);font-size:1.05rem}
+.btn{display:inline-block;margin-top:22px;padding:11px 26px;font-weight:600;color:var(--blue);background:var(--tint);border:1px solid var(--glow-ring);border-radius:999px;text-decoration:none;transition:box-shadow .2s,transform .2s}
+.btn:hover{box-shadow:var(--tile-shadow-hover);transform:translateY(-2px)}
+
+@keyframes blink{50%{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.stack{animation:none}.cursor{animation:none}.btn{transition:none}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <main class="stack">
+    <h1>404</h1>
+
+    <div class="term" aria-hidden="true">
+      <p><span class="who">bxuvnesh@faah:~</span><span class="dollar">$</span>cd <span class="path">/that-page</span></p>
+      <p class="err">bash: cd: <span class="path">/that-page</span>: No such file or directory</p>
+      <p><span class="who">bxuvnesh@faah:~</span><span class="dollar">$</span><span class="cursor"></span></p>
+    </div>
+
+    <p class="sub">Page not found. Nothing here but impeccable taste.</p>
+    <a class="btn" href="/">Take me home</a>
+  </main>
+</div>
+
+<script>
+  // show the address the visitor actually tried, like a real terminal would
+  try {
+    var p = location.pathname || "/";
+    if (p.length > 40) p = p.slice(0, 37) + "…";
+    document.querySelectorAll(".path").forEach(function (el) { el.textContent = p; });
+  } catch (e) {}
+</script>
+</body>
+</html>
