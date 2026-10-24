@@ -1,4 +1,18 @@
 /* Site theme: "Cold violet". Change colours here and every page follows. */
+@font-face{
+  font-family:"Fraunces";
+  src:url("fonts/fraunces.woff2") format("woff2");
+  font-weight:500 700;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"Manrope";
+  src:url("fonts/manrope.woff2") format("woff2");
+  font-weight:400 600;
+  font-style:normal;
+  font-display:swap;
+}
 :root{
   --bg:#07070d;        /* page background (near-black) */
   --slate:#0f0f1c;     /* cards and panels */
