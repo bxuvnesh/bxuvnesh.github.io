@@ -39,3 +39,6 @@
   --tile-shadow:0 0 22px color-mix(in srgb,var(--blue) 9%,transparent),inset 0 1px 0 color-mix(in srgb,var(--ice) 7%,transparent);
   --tile-shadow-hover:0 0 30px color-mix(in srgb,var(--blue) 26%,transparent),inset 0 1px 0 color-mix(in srgb,var(--ice) 10%,transparent);
 }
+html {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6 4V22L10.5 17.5L14 25L17 23.5L13.5 16.5H20Z' fill='none' stroke='%23a5b4fc' stroke-opacity='.12' stroke-width='7' stroke-linejoin='round'/%3E%3Cpath d='M6 4V22L10.5 17.5L14 25L17 23.5L13.5 16.5H20Z' fill='none' stroke='%23a5b4fc' stroke-opacity='.3' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M6 4V22L10.5 17.5L14 25L17 23.5L13.5 16.5H20Z' fill='%23a5b4fc' stroke='%23eef0ff' stroke-width='1' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, auto;
+}
