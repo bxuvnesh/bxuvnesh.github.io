@@ -5,11 +5,11 @@
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // ---- Tweak these ----
-  const CORE = 'rgba(165, 180, 252, 0.26)'; // primary  #a5b4fc
-  const EDGE = 'rgba(103, 232, 249, 0.09)'; // accent   #67e8f9
-  const SIZE = 260;                         // px, resting size
-  const SWELL = 1.6;                        // scale over clickable things
-  const LAG = 0.14;                         // 0.05 = floaty, 0.3 = snappy
+const CORE = 'rgba(165, 180, 252, 0.4)';  // primary  #a5b4fc
+const EDGE = 'rgba(103, 232, 249, 0.12)'; // accent   #67e8f9
+const SIZE = 30;                          // px
+const SWELL = 1;                          // no growing
+const LAG = 1;                            // 1 = glued to the cursor, zero delay
   const HOVER_SEL = 'a, button, [role="button"], input, textarea, label, .tile, .card, [data-glow]';
   // ---------------------
 
