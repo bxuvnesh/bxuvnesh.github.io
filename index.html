@@ -136,6 +136,20 @@ footer{padding-top:8px;color:var(--muted);font-size:.85rem;text-align:center}
   <footer>© 2026 Bhuvnesh Kumar</footer>
 </div>
 <script>
+// fahh easter egg: click the profile photo (audio loads only on first click)
+(function(){
+  var pic=document.querySelector('.photo'),a;
+  if(!pic)return;
+  pic.addEventListener('click',function(){
+    try{
+      if(!a)a=new Audio('fahh.mp3');
+      a.currentTime=0;
+      a.play().catch(function(){});
+    }catch(e){}
+  });
+})();
+</script>
+<script>
 (async()=>{try{
   const r=await fetch('highlights.json?'+Date.now(),{cache:'no-store'});if(!r.ok)return;
   const hs=(await r.json()).highlights.filter(h=>!h.hidden).slice(0,6),box=document.querySelector('.rings');

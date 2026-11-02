@@ -60,5 +60,27 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-variation-settings:"o
     document.querySelectorAll(".path").forEach(function (el) { el.textContent = p; });
   } catch (e) {}
 </script>
+
+<script>
+  // "Take me home": play fahh, then go home once it ends
+  (function () {
+    var btn = document.querySelector(".btn");
+    if (!btn) return;
+    var audio = new Audio("/fahh.mp3"); // absolute path: this page loads from any URL depth
+    var busy = false;
+    function go() { location.href = "/"; }
+    btn.addEventListener("click", function (e) {
+      // let ctrl/cmd/shift/middle-click behave normally
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      if (busy) return;
+      busy = true;
+      audio.addEventListener("ended", go);
+      audio.addEventListener("error", go);
+      setTimeout(go, 2500); // safety net so the button can never get stuck
+      audio.play().catch(go);
+    });
+  })();
+</script>
 </body>
 </html>
